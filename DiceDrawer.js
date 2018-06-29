@@ -4,6 +4,7 @@ class DiceDrawer {
         this.canvas = this.getCanvas()
         this.ctx = this.canvas.getContext('2d')
         this.bg = this.getBackground()
+        this.diceCache = []
     }
     getCanvas() {
         const canvas = document.createElement('canvas')
@@ -31,6 +32,7 @@ class DiceDrawer {
         return ctx.getImageData(0, 0, length, length)
     }
     getNum(num) {
+        if (this.diceCache[num]) return this.diceCache[num]
         const ctx = this.ctx
         const length = this.length
         ctx.putImageData(this.bg, 0, 0)
@@ -106,7 +108,9 @@ class DiceDrawer {
                 })
                 break
         }
-        return ctx.getImageData(0, 0, length, length)
+        const imageData = ctx.getImageData(0, 0, length, length)
+        this.diceCache[num] = imageData
+        return imageData
     }
 }
 export const diceDrawer = new DiceDrawer()
